@@ -1,22 +1,10 @@
 import { StyleSheet } from "react-native";
-import {
-  accentColor,
-  backgroundColor,
-  primaryColor,
-  secondaryColor,
-} from "../../styles";
+import { primaryColor } from "../../styles";
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: accentColor,
-    padding: 5,
-    alignItems: "center",
-    justifyContent: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    marginRight: 10,
-    borderRadius: 5,
     width: 30,
+    height: 30,
     marginLeft: "auto",
   },
   buttonText: {
@@ -28,6 +16,26 @@ const styles = StyleSheet.create({
     gap: 15,
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  viewView: {
+    flex: 1,
+    margin: 5,
+    flexDirection: "row",
+    borderBottomColor: "black",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  viewSimpleItem: {
+    flex: 1,
+    flexDirection: "row",
+    margin: 5,
+  },
+  viewTouchable: {
+    flex: 1,
+    margin: 5,
+    flex: 1,
+    flexDirection: "row",
+    borderBottomColor: "black",
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
 

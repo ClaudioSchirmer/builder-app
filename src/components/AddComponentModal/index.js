@@ -9,6 +9,7 @@ import {
 import styles from "./style";
 import { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
+import { set } from "firebase/database";
 
 export default function AddComponentModal({
   modalVisible,
@@ -30,8 +31,8 @@ export default function AddComponentModal({
   const [styleColor, setStyleColor] = useState("");
   const [fontSize, setFontSize] = useState("");
   const [margin, setMargin] = useState("");
+  const [marginTop, setMarginTop] = useState("");
   const [renderOrder, setRenderOrder] = useState(0);
-
   let options = [];
 
   if (parentComponent) {
@@ -71,6 +72,7 @@ export default function AddComponentModal({
     setStyleColor("");
     setFontSize("");
     setMargin("");
+    setMarginTop("");
     setRenderOrder(renderOrder + 5);
   };
 
@@ -84,7 +86,6 @@ export default function AddComponentModal({
       setStyleBackgroundColor("#ffffff");
     }
     if (styleColor && !isHex(styleColor)) {
-      console.log(styleColor);
       setStyleColor("#000000");
     }
     switch (value) {
@@ -139,7 +140,7 @@ export default function AddComponentModal({
         }
         let TIProperties = {
           renderOrder: renderOrder,
-          placeholder: placeholder ? placeholder : "",
+          placeholder: placeholder ? placeholder : "placeHolder",
           alsoChangeStateValueFor: addTextToShowStateChanging
             ? [{ key: textKey, prefix: "Typed: ", suffix: " !" }]
             : [],
@@ -149,6 +150,7 @@ export default function AddComponentModal({
             borderRadius: 5,
             padding: 5,
             width: "100%",
+            marginTop: marginTop ? parseInt(marginTop) : 0,
           },
         };
         if (parentComponent?.key) {
@@ -166,8 +168,8 @@ export default function AddComponentModal({
             justifyContent: "center",
             borderRadius: 3,
             width: "100%",
+            marginTop: marginTop ? parseInt(marginTop) : 0,
           },
-          onPress: "alert",
           renderOrder: renderOrder,
         };
         if (parentComponent?.key) {
@@ -266,6 +268,13 @@ export default function AddComponentModal({
               >
                 {placeholder}
               </TextInput>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Margin Top"
+                onChangeText={(text) => setMarginTop(text)}
+              >
+                {marginTop}
+              </TextInput>
               <View style={styles.switchContainer}>
                 <Text style={styles.switchText}>Show text changing:</Text>
                 <Switch
@@ -289,6 +298,13 @@ export default function AddComponentModal({
                 onChangeText={(text) => setStylePadding(text)}
               >
                 {stylePadding}
+              </TextInput>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Margin Top"
+                onChangeText={(text) => setMarginTop(text)}
+              >
+                {marginTop}
               </TextInput>
             </View>
           ) : null}

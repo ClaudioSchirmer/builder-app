@@ -1,9 +1,13 @@
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, Alert } from "react-native";
 
 export default class InterfaceBuilder {
   constructor(reactClass, components) {
     this.reactClass = reactClass;
     this.components = components;
+  }
+
+  hasCodeToBeGenerated() {
+    return this.components.length > 0;
   }
 
   getDefaultState() {
@@ -36,7 +40,7 @@ export default class InterfaceBuilder {
       return {
         ...element,
         getState: () => this.reactClass.state[element.key],
-        changeState: (inputText) => {
+        changeStateTextInput: (inputText) => {
           const changeState = {};
           changeState[element.key] = inputText;
           if (element.alsoChangeStateValueFor) {
@@ -47,6 +51,9 @@ export default class InterfaceBuilder {
             });
           }
           this.reactClass.setState(changeState);
+        },
+        changeStateTouchableOpacity: () => {
+          Alert.alert("TouchableOpacity", "It has been pressed!");
         },
       };
     });
@@ -95,7 +102,7 @@ export default class InterfaceBuilder {
                     key={element.key}
                     style={element?.style !== undefined ? element.style : {}}
                     defaultValue={element.getState()}
-                    onChangeText={element.changeState}
+                    onChangeText={element.changeStateTextInput}
                     placeholder={
                       element?.placeholder !== undefined
                         ? element.placeholder
@@ -109,9 +116,7 @@ export default class InterfaceBuilder {
                   <TouchableOpacity
                     key={element.key}
                     style={element?.style !== undefined ? element.style : {}}
-                    onPress={
-                      element.onPress == "alert" ? () => alert("Hello") : null
-                    }
+                    onPress={element.changeStateTouchableOpacity}
                   >
                     {element.children.length > 0
                       ? this.buildInterface(element.children)

@@ -121,7 +121,13 @@ export default function HomeScreen({ componentsBuilder }) {
             },
           }}
         >
-          {(props) => <Code {...props} components={components} />}
+          {(props) => (
+            <Code
+              {...props}
+              components={components}
+              componentsFlatArray={componentsFlatArray}
+            />
+          )}
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
