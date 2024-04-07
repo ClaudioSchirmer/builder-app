@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, ScrollView, View } from "react-native";
+import { TouchableOpacity, Text, ScrollView, View, Alert } from "react-native";
 import BuilderItem from "../../components/BuilderItem";
 import styles from "./style";
 import { useState } from "react";
@@ -14,6 +14,25 @@ export default function Builder({
 
   const handleModalToggle = () => {
     setModalVisible(!modalVisible);
+  };
+
+  const handleRemovePress = () => {
+    Alert.alert(
+      "Reset Components",
+      "This action will permanently delete all components. Are you sure you want to proceed?",
+      [
+        {
+          text: "Confirm",
+          onPress: async () => {
+            handleModalToggle();
+            resetComponents();
+          },
+        },
+        {
+          text: "Cancel",
+        },
+      ]
+    );
   };
 
   return (
@@ -45,12 +64,7 @@ export default function Builder({
       >
         <Text style={styles.buttonTextOk}>Add Component</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.buttonCancel}
-        onPress={() => {
-          resetComponents();
-        }}
-      >
+      <TouchableOpacity style={styles.buttonCancel} onPress={handleRemovePress}>
         <Text style={styles.buttonTextCancel}>Reset</Text>
       </TouchableOpacity>
       <AddComponentModal
