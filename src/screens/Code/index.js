@@ -28,7 +28,9 @@ export default function Code({ components, componentsFlatArray }) {
         </>
       ) : (
         <View style={styles.container}>
-          <Text style={styles.textError}>No code to be generated!</Text>
+          <Text style={styles.textError}>
+            No code available to be generated!
+          </Text>
         </View>
       )}
     </>
