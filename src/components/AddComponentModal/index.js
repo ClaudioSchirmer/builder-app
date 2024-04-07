@@ -22,7 +22,8 @@ export default function AddComponentModal({
   const [styleBackgroundColor, setStyleBackgroundColor] = useState("");
   const [stylePadding, setStylePadding] = useState("");
   const [defaultState, setDefaultState] = useState("");
-  const [centralize, setCentralize] = useState(true);
+  const [horizontalCenter, setHorizontalCenter] = useState(true);
+  const [verticalCenter, setVerticalCenter] = useState(true);
   const [placeholder, setPlaceholder] = useState("");
   const [addTextToShowStateChanging, setAddTextToShowStateChanging] =
     useState(true);
@@ -63,7 +64,8 @@ export default function AddComponentModal({
     setStyleBackgroundColor("");
     setStylePadding("");
     setDefaultState("");
-    setCentralize(true);
+    setVerticalCenter(true);
+    setHorizontalCenter(true);
     setPlaceholder("");
     setAddTextToShowStateChanging(true);
     setStyleColor("");
@@ -91,8 +93,8 @@ export default function AddComponentModal({
           style: {
             backgroundColor: styleBackgroundColor,
             padding: stylePadding ? parseInt(stylePadding) : 0,
-            justifyContent: centralize ? "center" : "flex-start",
-            alignItems: centralize ? "center" : "stretch",
+            justifyContent: verticalCenter ? "center" : "flex-start",
+            alignItems: horizontalCenter ? "center" : "stretch",
           },
         });
         break;
@@ -101,6 +103,7 @@ export default function AddComponentModal({
           defaultState: defaultState
             ? defaultState
             : " Default Text has no value ",
+          renderOrder: renderOrder,
           style: {
             color: styleColor ? styleColor : "#000000",
             fontSize: fontSize ? parseInt(fontSize) : 12,
@@ -122,10 +125,6 @@ export default function AddComponentModal({
             style: {
               fontSize: 12,
               color: "#ff0000",
-              marginLeft: margin ? parseInt(margin) : 0,
-              marginRight: margin ? parseInt(margin) : 0,
-              marginTop: margin ? parseInt(margin) * -1 : 0,
-              marginBottom: margin ? parseInt(margin) : 0,
             },
           };
           if (parentComponent?.key) {
@@ -149,8 +148,7 @@ export default function AddComponentModal({
             borderWidth: 1,
             borderRadius: 5,
             padding: 5,
-            width: "auto",
-            margin: margin ? parseInt(margin) : 0,
+            width: "100%",
           },
         };
         if (parentComponent?.key) {
@@ -164,15 +162,13 @@ export default function AddComponentModal({
           style: {
             backgroundColor: styleBackgroundColor,
             padding: stylePadding ? parseInt(stylePadding) : 0,
-            margin: margin ? parseInt(margin) : 0,
             alignItems: "center",
             justifyContent: "center",
-            borderRadius: 5,
-            width: "auto",
+            borderRadius: 3,
+            width: "100%",
           },
-          onPress: () => {
-            alert("Button pressed!");
-          },
+          onPress: "alert",
+          renderOrder: renderOrder,
         };
         if (parentComponent?.key) {
           addChildComponent(parentComponent.key, value, TOProperties);
@@ -216,8 +212,18 @@ export default function AddComponentModal({
                 {stylePadding}
               </TextInput>
               <View style={styles.switchContainer}>
-                <Text style={styles.switchText}>Center all items:</Text>
-                <Switch value={centralize} onValueChange={setCentralize} />
+                <Text style={styles.switchText}>Horizontal Center:</Text>
+                <Switch
+                  value={horizontalCenter}
+                  onValueChange={setHorizontalCenter}
+                />
+              </View>
+              <View style={styles.switchContainer}>
+                <Text style={styles.switchText}>Vertical Center:</Text>
+                <Switch
+                  value={verticalCenter}
+                  onValueChange={setVerticalCenter}
+                />
               </View>
             </View>
           ) : value === "Text" ? (
@@ -260,13 +266,6 @@ export default function AddComponentModal({
               >
                 {placeholder}
               </TextInput>
-              <TextInput
-                style={styles.textInput}
-                placeholder="Margin"
-                onChangeText={(text) => setMargin(text)}
-              >
-                {margin}
-              </TextInput>
               <View style={styles.switchContainer}>
                 <Text style={styles.switchText}>Show text changing:</Text>
                 <Switch
@@ -290,13 +289,6 @@ export default function AddComponentModal({
                 onChangeText={(text) => setStylePadding(text)}
               >
                 {stylePadding}
-              </TextInput>
-              <TextInput
-                style={styles.textInput}
-                placeholder="Margin"
-                onChangeText={(text) => setMargin(text)}
-              >
-                {margin}
               </TextInput>
             </View>
           ) : null}

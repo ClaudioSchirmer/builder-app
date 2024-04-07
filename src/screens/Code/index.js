@@ -1,9 +1,10 @@
 import { View, Text } from "react-native";
 
-export default function Code() {
+export default function Code({ components }) {
+  console.log(components);
   return (
     <View>
-      <Text>Code</Text>
+      <Text> text </Text>
     </View>
   );
 }

@@ -109,7 +109,9 @@ export default class InterfaceBuilder {
                   <TouchableOpacity
                     key={element.key}
                     style={element?.style !== undefined ? element.style : {}}
-                    onPress={element.onPress}
+                    onPress={
+                      element.onPress == "alert" ? () => alert("Hello") : null
+                    }
                   >
                     {element.children.length > 0
                       ? this.buildInterface(element.children)

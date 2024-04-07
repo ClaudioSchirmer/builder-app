@@ -8,7 +8,7 @@ export default class ComponentsBuilder {
   addComponent(type, properties) {
     const component = this.prepareComponent(type, properties);
     this.components.push(component);
-    return component.key;
+    return component;
   }
 
   getParent(parentKey, components = this.components) {
@@ -34,15 +34,16 @@ export default class ComponentsBuilder {
     if (!parent) {
       return;
     }
-    const component = this.prepareComponent(type, properties);
+    const component = this.prepareComponent(type, properties, parentKey);
     parent.children.push(component);
-    return component.key;
+    return component;
   }
 
-  prepareComponent(type, properties) {
-    const key = uuid().replace(/-/gi, "a");
+  prepareComponent(type, properties, parentKey = null) {
+    const key = properties?.key ? properties.key : uuid().replace(/-/gi, "a");
     return {
       ...properties,
+      parentKey,
       key: key,
       type: type,
       children: [],
@@ -61,17 +62,18 @@ export default class ComponentsBuilder {
     this.components = [];
   }
 
-  getComponentsFrom(components, identation = 0) {
+  getComponentsFrom(components, parentKey = null, identation = 0) {
     let componentsArray = [];
     components
       .sort(function (a, b) {
         return a.renderOrder - b.renderOrder;
       })
       .forEach((element) => {
-        componentsArray.push({ component: element, identation });
+        componentsArray.push({ component: element, parentKey, identation });
         if (element.children.length > 0) {
           let children = this.getComponentsFrom(
             element.children,
+            element.key,
             identation + 1
           );
           componentsArray = componentsArray.concat(children);
