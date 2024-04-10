@@ -9,7 +9,6 @@ import {
 import styles from "./style";
 import { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
-import { set } from "firebase/database";
 
 export default function AddComponentModal({
   modalVisible,
@@ -77,22 +76,19 @@ export default function AddComponentModal({
   };
 
   function isHex(h) {
-    var a = parseInt(h, 16);
-    return a.toString(16) === h;
+    let pattern = new RegExp("^#[0-9A-F]{6}$", "i");
+    return pattern.test(h);
   }
 
   const onAddComponent = () => {
-    if (styleBackgroundColor && !isHex(styleBackgroundColor)) {
-      setStyleBackgroundColor("#ffffff");
-    }
-    if (styleColor && !isHex(styleColor)) {
-      setStyleColor("#000000");
-    }
     switch (value) {
       case "View":
         addComponent(value, {
           style: {
-            backgroundColor: styleBackgroundColor,
+            backgroundColor:
+              styleBackgroundColor && isHex(styleBackgroundColor)
+                ? styleBackgroundColor
+                : "#ffffff",
             padding: stylePadding ? parseInt(stylePadding) : 0,
             justifyContent: verticalCenter ? "center" : "flex-start",
             alignItems: horizontalCenter ? "center" : "stretch",
@@ -106,7 +102,7 @@ export default function AddComponentModal({
             : " Default Text has no value ",
           renderOrder: renderOrder,
           style: {
-            color: styleColor ? styleColor : "#000000",
+            color: styleColor && isHex(styleColor) ? styleColor : "#000000",
             fontSize: fontSize ? parseInt(fontSize) : 12,
             margin: margin ? parseInt(margin) : 0,
           },
@@ -162,7 +158,10 @@ export default function AddComponentModal({
       case "TouchableOpacity":
         let TOProperties = {
           style: {
-            backgroundColor: styleBackgroundColor,
+            backgroundColor:
+              styleBackgroundColor && isHex(styleBackgroundColor)
+                ? styleBackgroundColor
+                : "#ffffff",
             padding: stylePadding ? parseInt(stylePadding) : 0,
             alignItems: "center",
             justifyContent: "center",
